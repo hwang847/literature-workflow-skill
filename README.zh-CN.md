@@ -2,9 +2,9 @@
 
 [English](README.md)
 
-这是一个 Codex workflow skill，用来快速阅读论文方法、和 Codex 讨论 pipeline、管理多来源文献，并生成个性化 HTML 论文笔记。
+这是一个种子型 Codex workflow skill，用来快速阅读论文方法、和 Codex 讨论 pipeline、管理多来源文献，并生成个性化 HTML 论文笔记。
 
-你只需要选一个论文文件夹，剩下交给 Codex。
+它提供的是起点：基础能力、基础目录结构和基础阅读工作流。真正的用户偏好和个性化工作流，应该由用户和 Codex 在自己的 workspace 里继续对话、改进和沉淀。
 
 ## Quickstart
 
@@ -59,7 +59,7 @@ HTML 笔记越简洁越好。
 项目页和 GitHub repo 也要作为 source 关联起来。
 ```
 
-Codex 会把稳定偏好整理到本地 `AGENTS.md`，并在你的工作流变化后继续更新它，不用你自己改配置。
+Codex 会把稳定偏好整理到本地 `AGENTS.md`，并在你的工作流变化后继续更新它。可以把这个 skill 理解成“种子”，而本地 `AGENTS.md` 才是你的个人工作流长出来的地方。
 
 ## Source 模型
 

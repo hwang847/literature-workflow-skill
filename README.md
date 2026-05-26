@@ -2,9 +2,9 @@
 
 [中文说明](README.zh-CN.md)
 
-A Codex workflow skill for fast paper reading, method-pipeline discussion, source management, and personalized HTML notes.
+A seed Codex workflow skill for fast paper reading, method-pipeline discussion, source management, and personalized HTML notes.
 
-You choose a folder for your papers. Codex does the setup.
+This repository gives you the starting point: a basic working structure and a basic reading workflow. Your personal preferences and richer workflow should evolve through conversation with Codex in your own workspace.
 
 ## Quickstart
 
@@ -59,7 +59,7 @@ Use Chinese for reading and notes.
 Track project pages and GitHub repos as sources.
 ```
 
-Codex will turn stable preferences into local `AGENTS.md` rules, and update them later when your workflow changes, instead of making you edit configuration files.
+Codex will turn stable preferences into local `AGENTS.md` rules, and update them later when your workflow changes. Think of this skill as the seed; your local `AGENTS.md` is where the workflow becomes yours.
 
 ## Source Model
 

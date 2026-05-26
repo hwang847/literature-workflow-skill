@@ -8,6 +8,8 @@ Let scripts handle mechanical setup. Let Codex handle personalization.
 
 Run `scripts/paper_workflow.py --root <workspace> setup` to create the standard folders, source registry, and index. Run `doctor` after that. Then create, update, and maintain the workspace's local `AGENTS.md` from the user's intent.
 
+This open-source skill is a seed. It provides basic mechanics and a starting workflow. The user's own `AGENTS.md` is the evolving local workflow.
+
 Do not treat `templates/AGENTS.example.md` as a fixed file to copy. It is only a shape reference.
 
 Do not ask the user to create `papers/`, `notes/`, `notes/assets/`, or `references/`; setup creates them. Do not ask the user to inspect Python packages; use `doctor` and handle missing optional dependencies.

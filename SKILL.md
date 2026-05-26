@@ -5,7 +5,7 @@ description: "Use for local literature folders: add/import PDFs, refresh/search 
 
 # Literature Workflow
 
-Use this skill when a user wants Codex to read, manage, or note papers and technical documents in a local folder.
+Use this seed skill when a user wants Codex to set up a basic literature workflow, then evolve the workspace through local preferences in `AGENTS.md`.
 
 ## Script
 
@@ -51,6 +51,8 @@ When the user asks to set up, organize, initialize, or configure a literature wo
 5. Keep `AGENTS.md` personalized and compact; do not blindly copy a template.
 6. If optional dependencies are missing, explain their impact briefly and offer to install or proceed without that feature.
 7. When future conversation reveals stable preference changes, maintain `AGENTS.md` so it stays current.
+
+This skill provides a seed workflow, not a final universal policy. Let the user's local `AGENTS.md` evolve through conversation.
 
 ## Folder Contract
 
