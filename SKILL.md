@@ -65,7 +65,7 @@ If a matched entity has no local PDF, explain that and use available local/web s
 
 1. If new files were copied in, run `refresh`.
 2. Run `readpack` for papers with PDFs; use `source show` for non-PDF or multi-source entities.
-3. Start by translating the abstract's substance into Chinese when an abstract exists; use adaptive wording, not a fixed heading.
+3. Start by translating or summarizing the abstract in the user's language when an abstract exists; use adaptive wording, not a fixed heading.
 4. Explain the thesis, high-value ideas, and why it matters for the user's research context.
 5. Explain the method as an implementable pipeline: inputs, outputs, modules, state, data structures, control flow, prompts/tools/retrieval/training/inference/verification/failure handling.
 6. Add an end-to-end example or pseudocode/interfaces only when useful.
@@ -75,7 +75,7 @@ If the work is adjacent to Text-to-SQL rather than pure Text-to-SQL, explain its
 
 ## HTML Notes
 
-Create or update HTML only after an explicit note trigger such as "生成笔记", "整理笔记", or "写成 HTML".
+Create or update HTML only after an explicit note trigger such as "generate an HTML note", "write notes", "生成笔记", "整理笔记", or "写成 HTML".
 
 Use the discussion history and the user's perspective. Keep HTML standalone, browser-openable, and minimal. Generate the filename with `note-name`.
 
