@@ -1,6 +1,6 @@
 # Workspace Setup Guidance
 
-Use this reference only when the user asks to set up, organize, or configure a literature workspace.
+Use this reference only when the user asks to set up, initialize, or configure a literature workspace.
 
 ## Principle
 
@@ -8,7 +8,9 @@ Let scripts handle mechanical setup. Let Codex handle personalization.
 
 Run `scripts/paper_workflow.py --root <workspace> setup` to create the standard folders, source registry, and index. Run `doctor` after that. Then create, update, and maintain the workspace's local `AGENTS.md` from the user's intent.
 
-This open-source skill is a seed. It provides basic mechanics and a starting workflow. The user's own `AGENTS.md` is the evolving local workflow.
+This open-source skill provides base mechanics and a starting workflow. The user's own `AGENTS.md` is the evolving local workflow.
+
+Keep scripts for capabilities that are useful because they are deterministic, repetitive, or fragile when done manually: indexing, title-to-PDF lookup, source registry updates, PDF rendering, note filenames, and environment checks. Do not turn ordinary file organization into skill logic; Codex can handle moving, renaming, or classifying files directly when the user asks.
 
 Do not treat `templates/AGENTS.example.md` as a fixed file to copy. It is only a shape reference.
 

@@ -5,7 +5,7 @@ description: "Use for local literature folders: add/import PDFs, refresh/search 
 
 # Literature Workflow
 
-Use this seed skill when a user wants Codex to set up a basic literature workflow, then evolve the workspace through local preferences in `AGENTS.md`.
+Use this skill when a user wants Codex to set up a base literature workflow, then evolve the workspace through local preferences in `AGENTS.md`.
 
 ## Script
 
@@ -42,7 +42,7 @@ Text extraction needs one of `pypdf`, PyMuPDF, or system `pdftotext`. Screenshot
 
 ## Workspace Setup
 
-When the user asks to set up, organize, initialize, or configure a literature workspace:
+When the user asks to set up, initialize, or configure a literature workspace:
 
 1. Run `setup` for the target workspace.
 2. Run `doctor` to inspect text extraction and rendering capabilities.
@@ -52,7 +52,8 @@ When the user asks to set up, organize, initialize, or configure a literature wo
 6. If optional dependencies are missing, explain their impact briefly and offer to install or proceed without that feature.
 7. When future conversation reveals stable preference changes, maintain `AGENTS.md` so it stays current.
 
-This skill provides a seed workflow, not a final universal policy. Let the user's local `AGENTS.md` evolve through conversation.
+This skill provides a base workflow, not a final universal policy. Let the user's local `AGENTS.md` evolve through conversation.
+Do not add generic folder organization logic to the skill. Use scripts for deterministic indexing, source tracking, rendering, and naming; let Codex handle ad hoc cleanup, moving, renaming, or classification only when the user explicitly asks.
 
 ## Folder Contract
 

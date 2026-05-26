@@ -4,9 +4,11 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 
@@ -47,6 +49,34 @@ def main() -> int:
         matches = json.loads(found)
         assert matches, "expected a PDF match"
         assert matches[0]["path"] == "2501.00001v1.pdf"
+
+        registry = workspace / "references" / "source_registry.jsonl"
+        registry.write_text(
+            json.dumps(
+                {
+                    "title": "Human Friendly Title",
+                    "kind": "paper",
+                    "aliases": ["HFT"],
+                    "sources": [
+                        {
+                            "type": "pdf",
+                            "locator": "2501.00001v1.pdf",
+                            "role": "primary",
+                            "status": "available",
+                        }
+                    ],
+                },
+                ensure_ascii=False,
+            )
+            + "\n",
+            encoding="utf-8",
+        )
+        future = time.time() + 2
+        os.utime(registry, (future, future))
+
+        refreshed_by_registry = run("--root", str(workspace), "find", "HFT", "--json").stdout
+        registry_matches = json.loads(refreshed_by_registry)
+        assert registry_matches and registry_matches[0]["title"] == "Human Friendly Title"
 
         note_name = run("--root", str(workspace), "note-name", "LinkAlign: Example Paper").stdout.strip()
         assert note_name == "linkalign.html"

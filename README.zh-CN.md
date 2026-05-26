@@ -2,9 +2,47 @@
 
 [English](README.md)
 
-这是一个种子型 Codex workflow skill，用来快速阅读论文方法、和 Codex 讨论 pipeline、管理多来源文献，并生成个性化 HTML 论文笔记。
+这个仓库定义了一套文献阅读工作流，并把它注册成 Codex skill，方便你直接在 Codex 中使用。
 
-它提供的是起点：基础能力、基础目录结构和基础阅读工作流。真正的用户偏好和个性化工作流，应该由用户和 Codex 在自己的 workspace 里继续对话、改进和沉淀。
+它适合配合你常用的 PDF 阅读器和本地论文文件夹使用。它可以帮助 Codex 定位 PDF、把复制来的论文标题映射到编号文件、管理同一文献的多个 source、渲染论文截图，和你讨论方法 pipeline，并根据对话生成简洁的 HTML 笔记。
+
+它不是内置 PDF 阅读器。你仍然可以用 Zotero、Office、Preview、浏览器或任何你喜欢的阅读器看 PDF；Codex 负责可检索的工作区、交互式解读、source 管理和笔记生成。
+
+## 如何配合
+
+你需要做的事情很少：
+
+- 安装一次 skill。
+- 选择一个本地文件夹作为论文工作区。
+- 把 PDF 放进去，不需要改文件名。
+- 从 PDF 阅读器复制论文标题，然后让 Codex 带你读。
+- 在需要时告诉 Codex 你的阅读和笔记偏好。
+
+Codex 可以帮你做到：
+
+- 配置工作区、建立 PDF 索引、记录相关 source。
+- 把复制来的论文标题匹配到本地的 arXiv 编号、会议编号或普通下载文件名。
+- 把复杂文献转写成更适合你阅读偏好的解释。
+- 回答你关于方法、pipeline、实现细节、related work 或综述定位的追问。
+- 根据论文和你们的讨论生成简洁 HTML 笔记；本地支持渲染时，还可以加入论文截图。
+
+## 工作流边界
+
+这个 skill 为 Codex 固化的是那些重复、容易出错、需要稳定脚本支持的部分：
+
+- 工作区初始化和环境检查；
+- PDF 索引和复制标题查找；
+- PDF、arXiv、DOI、项目页、代码仓库、文档、slides 的 source registry；
+- 阅读材料准备；
+- 为笔记渲染论文截图；
+- HTML 笔记文件名规范化。
+
+Codex 本身通过对话处理更灵活的部分：
+
+- 按你的语言和阅读风格解释论文；
+- 调整阅读重点，例如方法 pipeline、实现细节或 related work；
+- 当你的偏好稳定后，更新当前工作区的 `AGENTS.md`；
+- 只有在你明确要求时，才清理、移动、重命名或分类文件。
 
 ## Quickstart
 
@@ -23,7 +61,7 @@ git clone https://github.com/hwang847/literature-workflow-skill.git ~/.codex/ski
 使用 $literature-workflow，帮我配置这个论文阅读工作区。
 ```
 
-你不需要手动建目录、初始化索引、制作或维护 `AGENTS.md`、检查 Python 包。Codex 会准备工作区，并持续把本地规则维护得尽量精简。
+Codex 会创建目录结构、初始化索引、检查本地能力，并维护一个精简的 `AGENTS.md` 来记录你的偏好。你不需要手动建目录或检查 Python 包。
 
 然后把 PDF 放进这个文件夹，继续说：
 
@@ -34,11 +72,31 @@ git clone https://github.com/hwang847/literature-workflow-skill.git ~/.codex/ski
 为这篇生成 HTML 笔记
 ```
 
-## Codex 会准备什么
+## 日常用法
+
+你不需要把下载下来的 PDF 从 arXiv 编号、会议编号或下载名改成论文标题。像 `2508.05002v1.pdf`、`2025.findings-naacl.245.pdf`、`download.pdf` 这样的文件名都可以直接使用。
+
+工作区配置好之后：
+
+1. 把新的 PDF 放进工作区根目录或 `papers/`。
+2. 用你的 PDF 阅读器打开论文。
+3. 复制论文标题。
+4. 对 Codex 说：
+
+```text
+使用 $literature-workflow，带我读这篇文献：
+APEX-SQL: Talking to the data via Agentic Exploration for Text-to-SQL
+```
+
+Codex 会在需要时刷新索引，把复制的论文标题匹配到本地 PDF，准备阅读材料，然后开始交互式阅读。你可以继续追问方法、pipeline、实现细节、related work，或任何你关心的部分。
+
+当你觉得已经讨论清楚后，再让 Codex 生成 HTML 笔记。笔记会结合论文内容和你们的讨论，所以它应该更贴近你的关注点，而不是通用摘要。
+
+## 工作区
 
 ```text
 your-workspace/
-├── papers/                 # 可选，已整理 PDF
+├── papers/                 # 可选，由你自己整理的 PDF
 ├── notes/                  # HTML 笔记
 │   └── assets/             # 截图
 ├── references/             # 索引和 source registry
@@ -47,7 +105,9 @@ your-workspace/
 
 新 PDF 可以直接放在工作区根目录作为 inbox。已经放在 `papers/` 下的 PDF 也可以直接使用。
 
-## 个性化
+这个 skill 不会强制规定文件分类方式，也不会自动移动你的 PDF。之后如果你想清理文件夹、重命名或分类，直接让 Codex 按你的想法处理即可。
+
+## 自定义
 
 把你的偏好告诉 Codex：
 
@@ -56,10 +116,11 @@ your-workspace/
 HTML 笔记越简洁越好。
 默认跳过实验，除非我问。
 阅读和笔记使用中文。
+我正在做文献综述，所以更关注 related work 和论文定位。
 项目页和 GitHub repo 也要作为 source 关联起来。
 ```
 
-Codex 会把稳定偏好整理到本地 `AGENTS.md`，并在你的工作流变化后继续更新它。可以把这个 skill 理解成“种子”，而本地 `AGENTS.md` 才是你的个人工作流长出来的地方。
+Codex 会把稳定偏好整理到本地 `AGENTS.md`，并在你的工作流变化后继续更新它。
 
 ## Source 模型
 

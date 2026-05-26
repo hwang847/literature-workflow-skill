@@ -27,11 +27,24 @@ def library_pdfs(root: Path) -> list[Path]:
     return paths
 
 
+def index_inputs(root: Path) -> list[Path]:
+    paths = library_pdfs(root)
+    paths.extend(
+        path
+        for path in (
+            root / "references" / "references.bib",
+            root / "references" / "source_registry.jsonl",
+        )
+        if path.exists()
+    )
+    return paths
+
+
 def index_is_stale(root: Path, index_path: Path) -> bool:
     if not index_path.exists():
         return True
     index_mtime = index_path.stat().st_mtime
-    return any(path.stat().st_mtime > index_mtime for path in library_pdfs(root))
+    return any(path.stat().st_mtime > index_mtime for path in index_inputs(root))
 
 
 def load_index(root: Path, index_path: Path) -> list[dict]:

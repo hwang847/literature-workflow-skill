@@ -66,7 +66,10 @@ def ensure_root(root: Path) -> None:
 
 def write_index(root: Path) -> list[dict]:
     ensure_root(root)
-    index = build_index(root, root / "references/references.bib")
+    try:
+        index = build_index(root, root / "references/references.bib")
+    except ValueError as exc:
+        raise WorkflowError("index_build_failed", str(exc)) from exc
     output = root / "references/paper_index.jsonl"
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(
