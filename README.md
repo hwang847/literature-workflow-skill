@@ -4,6 +4,8 @@
 
 This repository defines a literature-reading workflow and packages it as a Codex skill, so you can use that workflow directly inside Codex.
 
+This repository is developed and maintained with Codex.
+
 It is designed for working with a local paper folder alongside your usual PDF reader. Use it to locate PDFs, map copied paper titles to numbered files, manage related sources, render paper screenshots, discuss method pipelines with Codex, and generate concise HTML notes shaped by your conversation.
 
 This is not a built-in PDF reader. Keep reading PDFs in Zotero, Office, Preview, a browser, or any reader you like. Codex handles the searchable workspace, interactive explanation, source tracking, and notes.
