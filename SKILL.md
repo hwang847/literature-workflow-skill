@@ -18,6 +18,7 @@ scripts/paper_workflow.py
 Run against the current literature folder:
 
 ```text
+python3 <skill-dir>/scripts/paper_workflow.py --root "$PWD" setup
 python3 <skill-dir>/scripts/paper_workflow.py --root "$PWD" doctor
 python3 <skill-dir>/scripts/paper_workflow.py --root "$PWD" add <path|arxiv_id|url>
 python3 <skill-dir>/scripts/paper_workflow.py --root "$PWD" refresh
@@ -38,6 +39,18 @@ python3 <skill-dir>/scripts/paper_workflow.py --root "$PWD" source show "<entity
 ```
 
 Text extraction needs one of `pypdf`, PyMuPDF, or system `pdftotext`. Screenshots need Ghostscript or PyMuPDF; Pillow is needed only for cropping.
+
+## Workspace Setup
+
+When the user asks to set up, organize, initialize, or configure a literature workspace:
+
+1. Run `setup` for the target workspace.
+2. Run `doctor` to inspect text extraction and rendering capabilities.
+3. Read `references/workspace_setup.md`.
+4. Use the user's stated preferences and the current conversation to create or update the workspace-local `AGENTS.md`.
+5. Keep `AGENTS.md` personalized and compact; do not blindly copy a template.
+6. If optional dependencies are missing, explain their impact briefly and offer to install or proceed without that feature.
+7. When future conversation reveals stable preference changes, maintain `AGENTS.md` so it stays current.
 
 ## Folder Contract
 

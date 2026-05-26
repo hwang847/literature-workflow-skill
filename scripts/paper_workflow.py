@@ -26,6 +26,7 @@ MIN_CONFIDENT_SCORE = 0.92
 SOURCE_REGISTRY = Path("references/source_registry.jsonl")
 SOURCE_KINDS = {"paper", "tech_doc", "spec", "blog", "repo", "dataset", "slides", "unknown"}
 LOCAL_SOURCE_TYPES = {"pdf", "doc", "html", "text", "path"}
+WORKSPACE_DIRS = ("papers", "notes", "notes/assets", "references")
 
 
 class WorkflowError(Exception):
@@ -261,6 +262,39 @@ def write_source_records(root: Path, records: list[dict]) -> None:
         "\n".join(json.dumps(record, ensure_ascii=False, sort_keys=True) for record in records) + "\n",
         encoding="utf-8",
     )
+
+
+def setup_workspace(root: Path) -> dict:
+    created: list[str] = []
+    preserved: list[str] = []
+    if root.exists():
+        ensure_root(root)
+    else:
+        root.mkdir(parents=True, exist_ok=True)
+        created.append(".")
+    for dirname in WORKSPACE_DIRS:
+        path = root / dirname
+        if path.exists():
+            preserved.append(dirname)
+        else:
+            path.mkdir(parents=True, exist_ok=True)
+            created.append(dirname)
+
+    source_path = source_registry_path(root)
+    if source_path.exists():
+        preserved.append(str(SOURCE_REGISTRY))
+    else:
+        source_path.write_text("", encoding="utf-8")
+        created.append(str(SOURCE_REGISTRY))
+
+    index = write_index(root)
+    return {
+        "root": str(root),
+        "created": created,
+        "preserved": preserved,
+        "index_entries": len(index),
+        "agents_md": "create or update conversationally from user preferences; do not hard-code it in setup",
+    }
 
 
 def infer_source_type(locator: str) -> str:
@@ -734,6 +768,12 @@ def cmd_refresh(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_setup(args: argparse.Namespace) -> int:
+    payload = setup_workspace(args.root)
+    print(json.dumps(payload, ensure_ascii=False, indent=2))
+    return 0
+
+
 def cmd_find(args: argparse.Namespace) -> int:
     matches = find_matches(args.root, args.query, args.limit)
     if args.json:
@@ -899,6 +939,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Local literature workflow.")
     parser.add_argument("--root", default=".", type=Path, help="workspace root")
     sub = parser.add_subparsers(dest="cmd", required=True)
+
+    setup = sub.add_parser("setup", help="create the workspace folders, source registry, and index")
+    setup.set_defaults(func=cmd_setup)
 
     refresh = sub.add_parser("refresh", help="rebuild paper index")
     refresh.set_defaults(func=cmd_refresh)

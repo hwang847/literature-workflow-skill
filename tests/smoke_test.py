@@ -31,10 +31,14 @@ def run(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess[str]
 
 def main() -> int:
     with tempfile.TemporaryDirectory() as tmp:
-        workspace = Path(tmp)
-        (workspace / "papers").mkdir()
-        (workspace / "notes").mkdir()
-        (workspace / "references").mkdir()
+        workspace = Path(tmp) / "workspace"
+        setup = json.loads(run("--root", str(workspace), "setup").stdout)
+        assert workspace.is_dir()
+        assert (workspace / "papers").is_dir()
+        assert (workspace / "notes" / "assets").is_dir()
+        assert (workspace / "references" / "source_registry.jsonl").is_file()
+        assert setup["index_entries"] == 0
+
         (workspace / "2501.00001v1.pdf").write_bytes(b"%PDF-1.4\n% smoke test placeholder\n")
 
         run("--root", str(workspace), "refresh")
