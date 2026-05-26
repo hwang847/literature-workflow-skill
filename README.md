@@ -2,6 +2,8 @@
 
 [中文说明](README.zh-CN.md)
 
+Default documentation and examples are in English. Chinese usage is optional and supported through [README.zh-CN.md](README.zh-CN.md) or a local `AGENTS.md` preference.
+
 Literature Workflow Skill is a Codex workflow skill for reading papers and technical documents from a local folder.
 
 It helps Codex find local PDFs, map copied titles to numbered files, manage multiple sources for the same work, discuss method pipelines, render paper figures, and generate concise personalized HTML notes from the conversation.
@@ -87,6 +89,8 @@ Use $literature-workflow and create a minimal AGENTS.md for this literature fold
 You can also tell Codex your personal reading preferences, note style, research focus, naming rules, and constraints. Codex should understand the intent, remove noise, and record only the compact durable rules in your local `AGENTS.md`.
 
 Private runtime imports such as local profile files should stay in your own workspace, not in this open-source skill.
+
+English is the default language for the open-source skill. If you prefer Chinese or another language, tell Codex and let it record that preference in your local `AGENTS.md`.
 
 ## Output
 

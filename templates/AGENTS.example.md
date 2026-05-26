@@ -5,6 +5,7 @@
 - This file is a local example for Codex. Edit it for your own literature folder.
 - Users may describe personal preferences in natural language; Codex should infer intent and keep only compact durable rules here.
 - Use `$literature-workflow` as the executable workflow.
+- Default language is English unless the user asks for another language; record language preference here only when it is stable.
 - Workspace root is the current directory containing this `AGENTS.md`.
 - This is a paper/document library, not an app; do not start servers, build UI, move, rename, or delete files unless explicitly asked.
 - New PDFs belong in the root inbox by default; organized PDFs may live under `papers/`.

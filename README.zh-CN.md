@@ -4,6 +4,8 @@
 
 这是一个面向 Codex App / Codex CLI 的文献阅读工作流。更准确地说，它是一个 **Codex literature workflow skill**：帮助你快速定位论文、读懂方法 pipeline、和 Codex 讨论细节，并把讨论结果生成个性化 HTML 论文笔记。
 
+开源版默认使用英文说明和英文示例；中文说明是可选辅助。如果你希望 Codex 默认用中文带读、讨论和写笔记，把这个偏好告诉 Codex，让它记录到你本地的 `AGENTS.md`。
+
 它不是一个普通脚本，也不是一份固定 prompt；它是一套让 Codex 在本地文献文件夹中工作的 workflow。
 
 ## 这一般叫什么
