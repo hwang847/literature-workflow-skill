@@ -1,4 +1,4 @@
-# Literature Workflow Skill
+# Codex Paper Reader Workflow Skill
 
 [中文说明](README.zh-CN.md)
 
@@ -52,7 +52,7 @@ Install:
 
 ```bash
 mkdir -p ~/.codex/skills
-git clone https://github.com/hwang847/literature-workflow-skill.git ~/.codex/skills/literature-workflow
+git clone https://github.com/hwang847/codex-paper-reader.git ~/.codex/skills/literature-workflow
 ```
 
 Restart Codex App or open a new Codex CLI session.

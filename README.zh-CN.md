@@ -1,4 +1,4 @@
-# 文献阅读工作流 Skill
+# Codex 论文阅读工作流 Skill
 
 [English](README.md)
 
@@ -52,7 +52,7 @@ Codex 本身通过对话处理更灵活的部分：
 
 ```bash
 mkdir -p ~/.codex/skills
-git clone https://github.com/hwang847/literature-workflow-skill.git ~/.codex/skills/literature-workflow
+git clone https://github.com/hwang847/codex-paper-reader.git ~/.codex/skills/literature-workflow
 ```
 
 重启 Codex App，或开启新的 Codex CLI 会话。
