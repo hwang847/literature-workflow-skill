@@ -81,9 +81,10 @@ If a matched entity has no local PDF, explain that and use available local/web s
 
 1. If new files were copied in, run `refresh`.
 2. Run `readpack` for papers with PDFs; use `source show` for non-PDF or multi-source entities.
+   `readpack` may identify method-like sections as `method`, `workflow`, or `system`; use `method_heading`, `method_label`, and `section_candidates` before doing any manual PDF text scan.
 3. Start by translating or summarizing the abstract in the user's language when an abstract exists; use adaptive wording, not a fixed heading.
 4. Explain the thesis, high-value ideas, and why it matters for the user's research context.
-5. Explain the method as an implementable pipeline: inputs, outputs, modules, state, data structures, control flow, prompts/tools/retrieval/training/inference/verification/failure handling.
+5. Explain the method/workflow as an implementable pipeline: inputs, outputs, modules, state, data structures, control flow, prompts/tools/retrieval/training/inference/verification/failure handling.
 6. Add an end-to-end example or pseudocode/interfaces only when useful.
 7. Skip experiments/results unless the user explicitly asks, except for minimal claims needed to explain motivation or contribution.
 

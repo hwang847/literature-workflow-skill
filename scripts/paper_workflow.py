@@ -568,17 +568,80 @@ def between(text: str, start_pattern: str, end_pattern: str) -> str:
     return clean_text(text[start.end() : start.end() + end.start()])
 
 
+METHOD_LIKE_STARTS = (
+    (
+        "method",
+        r"(^|\n)\s*(?:\d+(?:\.\d+)*\.?\s*)?(?:the\s+)?(?:proposed\s+)?(?:methodology|methods?|approach)\b[^\n]{0,120}",
+    ),
+    (
+        "workflow",
+        r"(^|\n)\s*(?:\d+(?:\.\d+)*\.?\s*)?[^\n]{0,80}\b(?:workflow|pipeline)\b[^\n]{0,120}",
+    ),
+    (
+        "system",
+        r"(^|\n)\s*(?:\d+(?:\.\d+)*\.?\s*)?(?:system\s+overview|overview|architecture|framework|implementation|design)\b[^\n]{0,120}",
+    ),
+)
+
+SECTION_END_RE = (
+    r"(^|\n)\s*(?:\d+(?:\.\d+)*\.?\s*)?"
+    r"(?:experiments?|experimental\s+setup|evaluation|results?|analysis|discussion|limitations?|"
+    r"conclusion|references|bibliography|appendix|acknowledg(?:e)?ments?)\b"
+)
+
+
+def plausible_heading(heading: str) -> bool:
+    heading = clean_text(heading)
+    if len(heading) < 3 or len(heading) > 160:
+        return False
+    if len(heading.split()) > 18:
+        return False
+    # Wrapped prose lines often end as full sentences; section headings usually do not.
+    if heading.endswith(".") and len(heading) > 50:
+        return False
+    return True
+
+
+def section_candidates(text: str, limit: int = 12) -> list[str]:
+    candidates: list[str] = []
+    seen: set[str] = set()
+    keywords = re.compile(
+        r"\b(methodology|methods?|approach|workflow|pipeline|architecture|framework|system\s+overview|implementation|design)\b",
+        flags=re.I,
+    )
+    for line in text.splitlines():
+        heading = clean_text(line)
+        key = heading.lower()
+        if key in seen or not keywords.search(heading) or not plausible_heading(heading):
+            continue
+        candidates.append(heading)
+        seen.add(key)
+        if len(candidates) >= limit:
+            break
+    return candidates
+
+
+def method_like_section(text: str) -> tuple[str, str, str]:
+    for label, start_pattern in METHOD_LIKE_STARTS:
+        for start in re.finditer(start_pattern, text, flags=re.I | re.M):
+            heading = clean_text(start.group(0))
+            if not plausible_heading(heading):
+                continue
+            end = re.search(SECTION_END_RE, text[start.end() :], flags=re.I | re.M)
+            body = text[start.end() :] if not end else text[start.end() : start.end() + end.start()]
+            body = clean_text(body)
+            if len(body) >= 200:
+                return body, heading, label
+    return "", "", ""
+
+
 def readpack(root: Path, query: str, max_pages: int) -> dict:
     pdf_path, match = resolve_pdf(root, query)
     pages = extract_pdf_pages(pdf_path, max_pages=max_pages)
     full = "\n".join(pages)
     title = match.get("title") if match else extract_title_from_first_page(pages[0] if pages else "", pdf_path.stem)
     abstract = between(full, r"\bAbstract\b", r"\b(1\s+Introduction|Introduction|Keywords)\b")
-    method = between(
-        full,
-        r"(^|\n)\s*(3\s+Methodology|Methodology|Method)\b",
-        r"(^|\n)\s*(4\s+Experiments|Experiments|Evaluation|References|Appendix)\b",
-    )
+    method, method_heading, method_label = method_like_section(full)
     appendix = between(full, r"(^|\n)\s*A\s+Instruction Templates\b", r"(^|\n)\s*B\s+")
     warnings = []
     if not abstract:
@@ -590,7 +653,10 @@ def readpack(root: Path, query: str, max_pages: int) -> dict:
         "path": str(pdf_path.relative_to(root) if pdf_path.is_relative_to(root) else pdf_path),
         "note_filename": note_filename(title),
         "abstract": abstract,
+        "method_heading": method_heading,
+        "method_label": method_label,
         "method_preview": method[:12000],
+        "section_candidates": section_candidates(full),
         "appendix_preview": appendix[:8000],
         "warnings": warnings,
     }
@@ -960,7 +1026,7 @@ def main() -> int:
     add.add_argument("--name")
     add.set_defaults(func=cmd_add)
 
-    pack = sub.add_parser("readpack", help="resolve PDF and extract abstract/method snippets")
+    pack = sub.add_parser("readpack", help="resolve PDF and extract abstract/method/workflow snippets")
     pack.add_argument("query")
     pack.add_argument("--max-pages", type=int, default=12)
     pack.set_defaults(func=cmd_readpack)

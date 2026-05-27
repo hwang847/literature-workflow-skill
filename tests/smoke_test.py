@@ -14,6 +14,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOL = ROOT / "scripts" / "paper_workflow.py"
+sys.path.insert(0, str(ROOT / "scripts"))
+
+from paper_workflow import method_like_section, section_candidates  # noqa: E402
 
 
 def run(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
@@ -32,6 +35,31 @@ def run(*args: str, cwd: Path | None = None) -> subprocess.CompletedProcess[str]
 
 
 def main() -> int:
+    sample_text = """
+Abstract
+This paper studies retrieval.
+
+1 Introduction
+Intro text.
+
+2 Related Work
+Prior systems.
+
+3 GroupRAG Workflow
+The workflow first builds a graph index from document chunks and entities. It then performs
+community-aware retrieval, expands the query context with graph neighborhoods, and composes
+evidence for generation. The controller keeps intermediate state, retrieved nodes, selected
+communities, and final evidence passages so the answer can be traced through the pipeline.
+
+4 Experiments
+Results follow.
+"""
+    method, heading, label = method_like_section(sample_text)
+    assert label == "workflow"
+    assert heading == "3 GroupRAG Workflow"
+    assert "community-aware retrieval" in method
+    assert "3 GroupRAG Workflow" in section_candidates(sample_text)
+
     with tempfile.TemporaryDirectory() as tmp:
         workspace = Path(tmp) / "workspace"
         setup = json.loads(run("--root", str(workspace), "setup").stdout)
